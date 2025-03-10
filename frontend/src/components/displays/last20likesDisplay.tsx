@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { fetchTop20_1YrReturn, ETFs } from "../../api/fetchApi";
 import "./last20likesDisplay.css";
 import { FavoritesProps } from "../../pages/Favorites";
-
+import { stripAcronym } from "../../utils/cleanResponse";
 /**
  * Display user's last 20 recently liked songs.
  * @param { username } <string>
@@ -43,7 +43,8 @@ export const Last20Likes: React.FC<FavoritesProps> = ({ username }) => {
 
         if (response.data) {
           console.log(response.data);
-          setETFs(response.data);
+          const responseCleaned = stripAcronym(response.data);
+          setETFs(responseCleaned);
         }
       } catch (err) {
         setError(err instanceof Error ? err.message : "An error occurred");
@@ -55,6 +56,11 @@ export const Last20Likes: React.FC<FavoritesProps> = ({ username }) => {
     lastLikes();
   }, [username]);
 
+  const handleCardClick = (etfName: string) => {
+    const searchQuery = encodeURIComponent(etfName);
+    window.open(`https://www.google.com/search?q=${searchQuery}`, "_blank");
+  };
+
   if (loading) return <div className="loading-buffer">Loading...</div>;
   if (error) return <div className="error-box">Error: {error}</div>;
 
@@ -62,9 +68,15 @@ export const Last20Likes: React.FC<FavoritesProps> = ({ username }) => {
     <div className="songs-container">
       <h3>Top 20 ETFs for 1 yr return</h3>
       <div className="songs-grid">
-        {Object.entries(ETFs).map(([id, name]) => (
-          <div key={id} className="songs-card">
-            <h5>{name}</h5>
+        {Object.entries(ETFs).map(([name, value]) => (
+          <div
+            key={name}
+            className="songs-card"
+            onClick={() => handleCardClick(name)}
+          >
+            <h5>
+              {name}: {value}%
+            </h5>
           </div>
         ))}
       </div>

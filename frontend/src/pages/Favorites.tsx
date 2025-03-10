@@ -16,7 +16,7 @@ const Favorites: React.FC<FavoritesProps> = ({ username }) => {
   return (
     <>
       <div className="library-insights">
-        <h1>{username}'s Library Insights</h1>
+        <h1>ETF Scanner Insights</h1>
         <Last20Likes username={username} />
         <UserPlaylists username={username} />
         <ConnTest username={username} />

@@ -36,7 +36,6 @@ def main():
         print("\n")
         print("Mutual Funds columns are", df_etf.columns)
         print("Mutual Funds Dataframe:", f"\n{df_mutual_fund.head(5)}\n\n\n")
-
         #print("Mutual Funds Dataframe:", f"\n{df_mutual_fund.head(10)}")
 
         df_test = pd.read_excel(test_path,
