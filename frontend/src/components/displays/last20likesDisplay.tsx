@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchLast20Likes, Songs } from "../../api/fetchApi";
+import { fetchTop20_1YrReturn, ETFs } from "../../api/fetchApi";
 import "./last20likesDisplay.css";
 import { FavoritesProps } from "../../pages/Favorites";
 
@@ -18,7 +18,7 @@ export const Last20Likes: React.FC<FavoritesProps> = ({ username }) => {
    * Description: TypeScript will not be able to determine what "type" of data will be passed back down from your backend.
    *  * We assign it an empty dict knowing that is its base state.
    */
-  const [songs, setSongs] = useState<Songs>({});
+  const [ETFs, setETFs] = useState<ETFs>({});
 
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -39,11 +39,11 @@ export const Last20Likes: React.FC<FavoritesProps> = ({ username }) => {
 
     const lastLikes = async () => {
       try {
-        const response = await fetchLast20Likes(username);
+        const response = await fetchTop20_1YrReturn();
 
         if (response.data) {
           console.log(response.data);
-          setSongs(response.data);
+          setETFs(response.data);
         }
       } catch (err) {
         setError(err instanceof Error ? err.message : "An error occurred");
@@ -60,9 +60,9 @@ export const Last20Likes: React.FC<FavoritesProps> = ({ username }) => {
 
   return (
     <div className="songs-container">
-      <h3>My Last 20 Liked Songs</h3>
+      <h3>Top 20 ETFs for 1 yr return</h3>
       <div className="songs-grid">
-        {Object.entries(songs).map(([id, name]) => (
+        {Object.entries(ETFs).map(([id, name]) => (
           <div key={id} className="songs-card">
             <h5>{name}</h5>
           </div>
