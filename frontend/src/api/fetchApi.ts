@@ -10,6 +10,9 @@ export interface Playlists {
 export interface Songs {
   [key: string]: string;
 }
+export interface ETFs {
+  [key: string]: string;
+}
 
 // API Functions
 /**
@@ -37,6 +40,30 @@ export async function fetchLast20Likes<Songs>(
 
   if (!response.ok) {
     console.log("Last 20: ", response);
+    throw new Error(`Last 20 HTTP error! status: ${response.status}`);
+  }
+
+  const data = await response.json();
+  return {
+    data,
+    status: response.status,
+  };
+}
+
+export async function fetchTop20_1YrReturn<ETFs>(): Promise<
+  FetchApiResponse<ETFs>
+> {
+  const response = await fetch(`/api/etfs/1year`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    credentials: "same-origin",
+  });
+
+  if (!response.ok) {
+    console.log("Top 20 choices for 1 year return: ", response);
     throw new Error(`Last 20 HTTP error! status: ${response.status}`);
   }
 

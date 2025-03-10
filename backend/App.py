@@ -2,7 +2,7 @@ import importlib.metadata
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import logging
-from modules.reads.read_user import last20Songs, allPlaylists
+from modules.calcs.ETFs.annual_return import one_year_return
 
 import sys
 sys.path.append('../backend/')
@@ -46,111 +46,28 @@ def home():
     return f"<h1>Hello World!</h1> <br /><h2>Backend is running :)</h2> <br /><h3>Flask Version: {flask_version}</h3> <br /><h3>Host Name: {host_name}</h3>"
     
 
-@app.route('/favorites/<username>', methods=['GET', 'OPTIONS'])
-def last_20_songs(username):
+@app.route('/etfs/1year')
+def etfs_1year():
     """
-    Return jsonify'ed list of favorites from the username provided.
-    
-    Args: 
-        username (str): The Spotify username to fetch songs for.
+    Return the top 10 best choices for 1 year return.
+
     Returns:
-        JSON: A dictionary of songs where:
-            - keys (str): Ranking position from "0" to "19"
-            - values (str): Song names
-    Example Response:
-        {
-            "1": "Artist 1 - Song Name 1",
-            "2": "Artist 2 - Song Name 2"
-        }
+        JSON: { "message": List[] }
     Raises:
-        400: If username is invalid or request fails
+        400: If request fails.
+        500: Backend logic wrong.
     """
-    try:
-        if request.method == 'OPTIONS':
-            # Explicitly handle OPTIONS request
-            response = jsonify({'status': 'ok'})
-            return response
-    
-        app.logger.info(f"Received request for favorites with username: {username}")
-        # Simple read from your library using second method of authentication
-        parsed_results = last20Songs()
-        app.logger.info (f"\n\n=============== TOP 20 SONGS ===============\n\n{parsed_results}")
-    
-        return jsonify(parsed_results)
+    try: 
+        app.logger.info(f"Received request for best 1 year return.")
+        best_10 = one_year_return()
 
+        app.logger.info(f"Best 10 ETFs for 1 year return: {best_10}")
+        return jsonify(best_10)
+    
     except Exception as e:
-        app.logger.error(f"Error, invalid username: {username}, {e}")
-        return jsonify({"error": f"Invalid username {username}"}), 400
+        app.logger.error(f"Error, {e}")
+        return jsonify({"error": f"{e}"}), 400
 
-
-@app.route('/favorites/playlists/<username>', methods=['GET', 'OPTIONS'])
-def my_playlists(username):
-    """
-    Return jsonify'ed list of playlists from the username provided.
-    
-    Args: 
-        username (str): The Spotify username to fetch songs for.
-    Returns:
-        JSON: A dictionary of songs where:
-            - keys (str): Ranking position from "1" to "n"
-            - values (str): Playlist names
-    Example Response:
-        {
-            "1": "Playlist Name 1",
-            "2": "Playlist Name 2"
-        }
-    Raises:
-        400: If username is invalid or request fails
-    """
-    try:
-
-        if request.method == 'OPTIONS':
-            # Explicitly handle OPTIONS request
-            response = jsonify({'status': 'ok'})
-            return response
-
-        app.logger.info(f"Received request for playlists with username: {username}")
-        # Simple read from your library using second method of authentication
-        parsed_results = allPlaylists()
-        app.logger.info (f"\n\n=============== MY PLAYLISTS ===============\n\n{parsed_results}")
-
-        return jsonify(parsed_results)
-
-    except Exception as e:
-        app.logger.error(f"Error, invalid username: {username}, {e}")
-        return jsonify({"error": f"Invalid username {username}"}), 400
-
-
-# @app.route('/<username>/library/top20', methods=['GET'])
-# def top_20(username):
-    
-#     """
-#     Return user's top 20 most-listened to songs.
-
-#     Args:
-#         username (str): The Spotify username to query for.
-#     Returns:
-#         JSON: A dictionary of songs where:
-#             - keys (str): Ranking position from "0" to "19"
-#             - values (str): Song names
-#     Example Response:
-#         {
-#             "1": "Artist 1 - Song Name 1",
-#             "2": "Artist 2 - Song Name 2"
-#         }
-#     Raises:
-#         400: If username is invalid or request fails
-#     """
-#     try:
-#         app.logger.info(f"Received request for top 20 songs.")
-#         parsed_results = top20Songs()
-#         app.logger.info(f"\n\n=============== TOP 20 ===============\n\n{parsed_results}")
-
-#         return parsed_results
-#     except Exception as e:
-#         app.logger.error(f"Error, invalid username: {username}, {e}")
-#         return jsonify({"error": f"Invalid username {username}"}), 400
-    
 
 @app.route('/connection', methods=['GET'])
 def conn_test():
@@ -164,10 +81,10 @@ def conn_test():
     """
     try:
         app.logger.info(f"Received request for connection test.")
-        app.logger.info (f"\n\n=============== CONNECTION TEST ===============\n\nYo: Hello World!")
-
+        app.logger.info (f"=============== CONNECTION TEST ===============\n\nYo: Hello World!\n")
+        app.logger.info (f"=============== END OF CONNECTION TEST ===============\n")
         return jsonify({ "message" : "Yo, Hello World!"})
-
+    
     except Exception as e:
         app.logger.error(f"Error, {e}")
         return jsonify({"error": f"{e}"}), 40

@@ -1,4 +1,6 @@
-spotipy
 python-dotenv
 flask
 flask-cors
+pandas
+xlrd
+openpyxl
