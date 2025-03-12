@@ -44,14 +44,3 @@ def one_year_return():
     return return_dict
 
 #one_year_return()
-
-# Write a function that gets the top 10 maxes
-def top_10_max():
-    # Sort the dataframe by 1 Yr Return in descending order
-    df_sorted = df_etf.sort_values(by='1 Yr Return', ascending=False)
-    # Get the top 10 rows
-    top_10 = df_sorted.head(10)
-    # Print the top 10 rows
-    print(top_10)
-
-#top_10_max()

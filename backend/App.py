@@ -2,7 +2,8 @@ import importlib.metadata
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import logging
-from modules.calcs.ETFs.annual_return import one_year_return
+from modules.calcs.ETFs.annual_return import one_year_return as etf_one_year_return
+from modules.calcs.MutualFunds.annual_return import one_year_return as mf_one_year_return
 
 import sys
 sys.path.append('../backend/')
@@ -58,8 +59,8 @@ def etfs_1year():
         500: Backend logic wrong.
     """
     try: 
-        app.logger.info(f"Received request for best 1 year return.")
-        best_10 = one_year_return()
+        app.logger.info(f"Received request for best 1 year return on ETFs.")
+        best_10 = etf_one_year_return()
 
         app.logger.info(f"Best 10 ETFs for 1 year return: {best_10}")
         return jsonify(best_10)
@@ -68,6 +69,28 @@ def etfs_1year():
         app.logger.error(f"Error, {e}")
         return jsonify({"error": f"{e}"}), 400
 
+
+@app.route('/mutualfunds/10year')
+def mutualfunds_10year():
+    """
+    Return the top 10 best choices for 10 year return.
+
+    Returns:
+        JSON: { "message": List[] }
+    Raises:
+        400: If request fails.
+        500: Backend logic wrong.
+    """
+    try:
+        app.logger.info(f"Received request for best 10 year return on mutual funds.")
+        best_10 = mf_one_year_return()
+
+        app.logger.info(f"Best 10 Mutual Funds for 10 year return: {best_10}")
+        return jsonify(best_10)
+
+    except Exception as e:
+        app.logger.error(f"Error, {e}")
+        return jsonify({"error": f"{e}"}), 400
 
 @app.route('/connection', methods=['GET'])
 def conn_test():

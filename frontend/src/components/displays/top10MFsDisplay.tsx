@@ -1,50 +1,40 @@
 import { useEffect, useState } from "react";
-import { fetchTop20_1YrReturn, ETFs } from "../../api/fetchApi";
-import "./last20likesDisplay.css";
-import { FavoritesProps } from "../../pages/Favorites";
-import { stripAcronym } from "../../utils/cleanResponse";
+import { fetchTop10_10YrMFsReturn, MutualFunds } from "../../api/fetchApi";
+import "./top10ETFsDisplay.css";
+import { ScannerProps } from "../../pages/Main";
+import { stripMutualFundsAcronym } from "../../utils/cleanResponse";
+
 /**
- * Display user's last 20 recently liked songs.
+ * Display user's created playlists.
  * @param { username } <string>
  * @returns { component } <FC>
  */
-export const Last20Likes: React.FC<FavoritesProps> = ({ username }) => {
+export const Top10MutualFunds: React.FC<ScannerProps> = ({ returnParam }) => {
+  returnParam = "10 Yr Return";
   /**
    * Uncomment and use the following line if the below error breaks your code:
    *  Argument of type '{}' is not assignable to parameter of type 'SetStateAction<Playlists>'.ts(2345)
    *
-   * // const [songs, setSongs] = useState<unknown>({});
+   * // const [playlists, setPlaylists] = useState<unknown>({});
    *
    * Description: TypeScript will not be able to determine what "type" of data will be passed back down from your backend.
    *  * We assign it an empty dict knowing that is its base state.
    */
-  const [ETFs, setETFs] = useState<ETFs>({});
+  // const [playlists, setPlaylists] = useState<Playlists>({});
+  const [funds, setFunds] = useState<MutualFunds>({});
 
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    /** Similar syntax
-     * fetch(`/api/${username}/library/top20`)
-      .then((response) => response.json())
-      .then((data) => {
-        setSongs(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        setError(error);
-        console.log("Error fetching test from API: ", error);
-      });
-     */
-
-    const lastLikes = async () => {
+    const fetchPlaylists = async () => {
       try {
-        const response = await fetchTop20_1YrReturn();
+        const response = await fetchTop10_10YrMFsReturn();
 
         if (response.data) {
           console.log(response.data);
-          const responseCleaned = stripAcronym(response.data);
-          setETFs(responseCleaned);
+          const responseCleaned = stripMutualFundsAcronym(response.data);
+          setFunds(responseCleaned);
         }
       } catch (err) {
         setError(err instanceof Error ? err.message : "An error occurred");
@@ -53,22 +43,26 @@ export const Last20Likes: React.FC<FavoritesProps> = ({ username }) => {
       }
     };
 
-    lastLikes();
-  }, [username]);
+    fetchPlaylists();
+  }, [returnParam]);
 
-  const handleCardClick = (etfName: string) => {
-    const searchQuery = encodeURIComponent(etfName);
+  const handleCardClick = (fundName: string) => {
+    const searchQuery = encodeURIComponent(fundName);
     window.open(`https://www.google.com/search?q=${searchQuery}`, "_blank");
   };
 
   if (loading) return <div className="loading-buffer">Loading...</div>;
   if (error) return <div className="error-box">Error: {error}</div>;
 
+  if (Object.keys(funds).length === 0) {
+    return <div className="empty-state">No mutual funds found</div>;
+  }
+
   return (
     <div className="songs-container">
-      <h3>Top 20 ETFs for 1 yr return</h3>
+      <h3>Top 10 Mutual Funds for 10 yr return</h3>
       <div className="songs-grid">
-        {Object.entries(ETFs).map(([name, value]) => (
+        {Object.entries(funds).map(([name, value]) => (
           <div
             key={name}
             className="songs-card"

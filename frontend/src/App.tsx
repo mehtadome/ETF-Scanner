@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Footer from "./components/Footer";
 import IDForm from "./components/forms/IDForm";
-import Favorites from "./pages/Favorites";
+import Main from "./pages/Main";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -52,7 +52,7 @@ function App() {
               ></Route>
               <Route
                 path="/favorites/:username"
-                element={<Favorites username={username} />}
+                element={<Main username={username} />}
               />
             </Routes>
           </div>

@@ -1,4 +1,4 @@
-import { ETFs } from "../api/fetchApi";
+import { ETFs, MutualFunds } from "../api/fetchApi";
 /**
  * {
  * 'FIRST TRUST SKYBRIDGE CRYPTO INDUSTRY & DIGITAL ECONOMY ETF (CRPT)': 147.36,
@@ -10,7 +10,7 @@ import { ETFs } from "../api/fetchApi";
  * }
  */
 
-export function stripAcronym(response: ETFs): ETFs {
+export function stripETFsAcronym(response: ETFs): ETFs {
   const parsedResponse: ETFs = {};
   // Loop through response JSON and keep only the acronym
   for (const [key, value] of Object.entries(response)) {
@@ -19,6 +19,22 @@ export function stripAcronym(response: ETFs): ETFs {
     if (match) {
       // match[1] contains the text between parentheses
       parsedResponse[match[1]] = value;
+    }
+  }
+  return parsedResponse;
+}
+
+export function stripMutualFundsAcronym(response: MutualFunds): MutualFunds {
+  const parsedResponse: MutualFunds = {};
+  // Loop through response JSON and keep only the acronym
+  for (const [key, value] of Object.entries(response)) {
+    // Extract text between parentheses using regex
+    const match = key.match(/\(([^)]+)\)/);
+    if (match) {
+      // match[1] contains the text between parentheses
+      parsedResponse[match[1]] = value;
+      // add 100 to the value
+      parsedResponse[match[1]] = (parseFloat(value) + 100).toFixed(2);
     }
   }
   return parsedResponse;
