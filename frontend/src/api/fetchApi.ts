@@ -3,54 +3,29 @@ import { FetchApiResponse } from "./apiUtils";
 // INFO: BASE_URL= http://localhost:5000/api
 
 // TYPES
-export interface Playlists {
+export interface MutualFunds {
   [key: string]: string;
 }
 // differentiating for readability
-export interface Songs {
-  [key: string]: string;
-}
 export interface ETFs {
   [key: string]: string;
 }
 
+// TODO: Split up API functions by ETF / Mutual Fund
+
 // API Functions
 /**
- * GET: Grab last 20 liked songs using Spotify username.
+ * GET: Grab top 10 ETFs based on risk portolio (currently hard-coded to 1 yr return).
  * PATH: http://localhost:5000/api/favorites/<username>
- * @param { username } <string>
- * @returns { songs } <JSON>
+ * @param { riskPortolio } <string> (currently unimplemented and hard-coded to 1 yr return outside of function).
+ * @returns { ETFs } <JSON>
 *  Example Response:
     {
-        "0": "Artist 1 - Song Name 1",
-        "1": "Artist 2 - Song Name 2"
+        'FIRST TRUST SKYBRIDGE CRYPTO INDUSTRY & DIGITAL ECONOMY ETF (CRPT)': 147.36, 
+        'SIMPLIFY VOLT TSLA REVOLUTION ETF (TESL)': 145.48
     }
  */
-export async function fetchLast20Likes<Songs>(
-  username: string
-): Promise<FetchApiResponse<Songs>> {
-  const response = await fetch(`/api/favorites/${username}`, {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    credentials: "same-origin",
-  });
-
-  if (!response.ok) {
-    console.log("Last 20: ", response);
-    throw new Error(`Last 20 HTTP error! status: ${response.status}`);
-  }
-
-  const data = await response.json();
-  return {
-    data,
-    status: response.status,
-  };
-}
-
-export async function fetchTop20_1YrReturn<ETFs>(): Promise<
+export async function fetchTop10_1YrETFsReturn<ETFs>(): Promise<
   FetchApiResponse<ETFs>
 > {
   const response = await fetch(`/api/etfs/1year`, {
@@ -63,8 +38,10 @@ export async function fetchTop20_1YrReturn<ETFs>(): Promise<
   });
 
   if (!response.ok) {
-    console.log("Top 20 choices for 1 year return: ", response);
-    throw new Error(`Last 20 HTTP error! status: ${response.status}`);
+    console.log("Top 20 ETF choices for 1 year return: ", response);
+    throw new Error(
+      `Top 20 ETFs for 1 year | HTTP error! status: ${response.status}`
+    );
   }
 
   const data = await response.json();
@@ -75,21 +52,20 @@ export async function fetchTop20_1YrReturn<ETFs>(): Promise<
 }
 
 /**
- * GET: Grab user's playlists using Spotify username.
+ * GET: Grab Top 10 Mutual Funds (currently hard-coded for 10 Yr Return).
  * PATH: http://localhost:5000/api/favorites/playlists/<username>
- * @param { username } <string>
- * @returns { playlists } <JSON>
+ * @param { riskPortfolio } <string> (currently unimplemented and hard-coded to 10 yr return outside of function)
+ * @returns { MutualFunds } <JSON>
  *    
  * Example Response:
     {
-        "1": "Playlist Name 1",
-        "2": "Playlist Name 2"
+        
     }
  */
-export async function fetchUserPlaylists<Playlists>(
-  username: string
-): Promise<FetchApiResponse<Playlists>> {
-  const response = await fetch(`/api/favorites/playlists/${username}`, {
+export async function fetchTop10_10YrMFsReturn<MutualFunds>(): Promise<
+  FetchApiResponse<MutualFunds>
+> {
+  const response = await fetch(`/api/mutualfunds/10year`, {
     method: "GET",
     headers: {
       Accept: "application/json",
@@ -99,8 +75,10 @@ export async function fetchUserPlaylists<Playlists>(
   });
 
   if (!response.ok) {
-    console.log("Playlists: ", response);
-    throw new Error(`Playlist HTTP error! status: ${response.status}`);
+    console.log("Top 20 Mutual Funds for 10 years: ", response);
+    throw new Error(
+      `Top 20 Mutual Funds for 10 years | HTTP error! status: ${response.status}`
+    );
   }
 
   const data = await response.json();

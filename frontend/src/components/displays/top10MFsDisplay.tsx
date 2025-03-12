@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
-import { fetchUserPlaylists, Playlists } from "../../api/fetchApi";
-import "./playlistDisplay.css";
-import { FavoritesProps } from "../../pages/Favorites";
+import { fetchTop10_10YrMFsReturn, MutualFunds } from "../../api/fetchApi";
+import "./top10ETFsDisplay.css";
+import { ScannerProps } from "../../pages/Main";
+import { stripMutualFundsAcronym } from "../../utils/cleanResponse";
 
 /**
  * Display user's created playlists.
  * @param { username } <string>
  * @returns { component } <FC>
  */
-export const UserPlaylists: React.FC<FavoritesProps> = ({ username }) => {
+export const Top10MutualFunds: React.FC<ScannerProps> = ({ returnParam }) => {
+  returnParam = "10 Yr Return";
   /**
    * Uncomment and use the following line if the below error breaks your code:
    *  Argument of type '{}' is not assignable to parameter of type 'SetStateAction<Playlists>'.ts(2345)
@@ -19,7 +21,7 @@ export const UserPlaylists: React.FC<FavoritesProps> = ({ username }) => {
    *  * We assign it an empty dict knowing that is its base state.
    */
   // const [playlists, setPlaylists] = useState<Playlists>({});
-  const [playlists, setPlaylists] = useState<Playlists>({});
+  const [funds, setFunds] = useState<MutualFunds>({});
 
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -27,11 +29,12 @@ export const UserPlaylists: React.FC<FavoritesProps> = ({ username }) => {
   useEffect(() => {
     const fetchPlaylists = async () => {
       try {
-        const response = await fetchUserPlaylists(username);
+        const response = await fetchTop10_10YrMFsReturn();
 
         if (response.data) {
           console.log(response.data);
-          setPlaylists(response.data);
+          const responseCleaned = stripMutualFundsAcronym(response.data);
+          setFunds(responseCleaned);
         }
       } catch (err) {
         setError(err instanceof Error ? err.message : "An error occurred");
@@ -41,31 +44,33 @@ export const UserPlaylists: React.FC<FavoritesProps> = ({ username }) => {
     };
 
     fetchPlaylists();
-  }, [username]);
+  }, [returnParam]);
+
+  const handleCardClick = (fundName: string) => {
+    const searchQuery = encodeURIComponent(fundName);
+    window.open(`https://www.google.com/search?q=${searchQuery}`, "_blank");
+  };
 
   if (loading) return <div className="loading-buffer">Loading...</div>;
   if (error) return <div className="error-box">Error: {error}</div>;
 
-  if (Object.keys(playlists).length === 0) {
-    return <div className="empty-state">No playlists found</div>;
+  if (Object.keys(funds).length === 0) {
+    return <div className="empty-state">No mutual funds found</div>;
   }
 
   return (
-    <div className="playlist-container">
-      <div className="playlist-header">
-        <h1>{username}'s Playlists</h1>
-      </div>
-      <div className="playlist-grid">
-        {Object.entries(playlists).map(([id, song]) => (
-          <div key={id} className="playlist-card">
-            <div className="playlist-info">
-              <div className="playlist-row">
-                <h3 className="playlist-name">{song}</h3>
-                <button className="play-button">▶</button>
-              </div>
-              {/* <p className="playlist-details">{song.artist}</p> */}
-              {/* <span className="track-count"> Add track count if available 20 tracks</span> */}
-            </div>
+    <div className="songs-container">
+      <h3>Top 10 Mutual Funds for 10 yr return</h3>
+      <div className="songs-grid">
+        {Object.entries(funds).map(([name, value]) => (
+          <div
+            key={name}
+            className="songs-card"
+            onClick={() => handleCardClick(name)}
+          >
+            <h5>
+              {name}: {value}%
+            </h5>
           </div>
         ))}
       </div>

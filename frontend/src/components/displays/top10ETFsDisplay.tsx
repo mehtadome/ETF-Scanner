@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
-import { fetchTop20_1YrReturn, ETFs } from "../../api/fetchApi";
-import "./last20likesDisplay.css";
-import { FavoritesProps } from "../../pages/Favorites";
-
+import { fetchTop10_1YrETFsReturn, ETFs } from "../../api/fetchApi";
+import "./top10ETFsDisplay.css";
+import { ScannerProps } from "../../pages/Main";
+import { stripETFsAcronym } from "../../utils/cleanResponse";
 /**
- * Display user's last 20 recently liked songs.
- * @param { username } <string>
+ * Display 20 ETFs based on return wanted (Currently hard-coded to 1 year).
+ * @param { returnParam } <string> (Currently hard-coded to 1 year in Main.tsx)
  * @returns { component } <FC>
  */
-export const Last20Likes: React.FC<FavoritesProps> = ({ username }) => {
+export const Top10ETFs: React.FC<ScannerProps> = ({ returnParam }) => {
   /**
    * Uncomment and use the following line if the below error breaks your code:
    *  Argument of type '{}' is not assignable to parameter of type 'SetStateAction<Playlists>'.ts(2345)
@@ -39,11 +39,12 @@ export const Last20Likes: React.FC<FavoritesProps> = ({ username }) => {
 
     const lastLikes = async () => {
       try {
-        const response = await fetchTop20_1YrReturn();
+        const response = await fetchTop10_1YrETFsReturn();
 
         if (response.data) {
           console.log(response.data);
-          setETFs(response.data);
+          const responseCleaned = stripETFsAcronym(response.data);
+          setETFs(responseCleaned);
         }
       } catch (err) {
         setError(err instanceof Error ? err.message : "An error occurred");
@@ -53,18 +54,29 @@ export const Last20Likes: React.FC<FavoritesProps> = ({ username }) => {
     };
 
     lastLikes();
-  }, [username]);
+  }, [returnParam]);
+
+  const handleCardClick = (etfName: string) => {
+    const searchQuery = encodeURIComponent(etfName);
+    window.open(`https://www.google.com/search?q=${searchQuery}`, "_blank");
+  };
 
   if (loading) return <div className="loading-buffer">Loading...</div>;
   if (error) return <div className="error-box">Error: {error}</div>;
 
   return (
     <div className="songs-container">
-      <h3>Top 20 ETFs for 1 yr return</h3>
+      <h3>Top 10 ETFs for 1 yr return</h3>
       <div className="songs-grid">
-        {Object.entries(ETFs).map(([id, name]) => (
-          <div key={id} className="songs-card">
-            <h5>{name}</h5>
+        {Object.entries(ETFs).map(([name, value]) => (
+          <div
+            key={name}
+            className="songs-card"
+            onClick={() => handleCardClick(name)}
+          >
+            <h5>
+              {name}: {value}%
+            </h5>
           </div>
         ))}
       </div>

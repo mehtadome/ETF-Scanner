@@ -1,9 +1,9 @@
-import { FavoritesProps } from "../../pages/Favorites";
+import { ScannerProps } from "../../pages/Main";
 import "./connectionDisplay.css";
 import { useEffect, useState } from "react";
 
 // Should simply display "Yo, Hello World!"
-export const ConnTest: React.FC<FavoritesProps> = ({ username }) => {
+export const ConnTest: React.FC<ScannerProps> = ({ returnParam }) => {
   const [test, setTest] = useState("");
   const [error, setError] = useState<string | null>(null);
 
@@ -22,7 +22,7 @@ export const ConnTest: React.FC<FavoritesProps> = ({ username }) => {
   return (
     <div className="connection-container">
       <div className="connection-header">
-        <h4>{username}'s Test Response</h4>
+        <h4>Scanner's Test Response</h4>
         <h5>{test?.message}</h5>
       </div>
     </div>

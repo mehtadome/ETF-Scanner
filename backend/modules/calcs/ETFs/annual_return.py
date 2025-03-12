@@ -13,12 +13,12 @@ load_dotenv()
 def get_inited_etf_dataframe():
     df_etf = init_table.export_etf_loggerless()
 
-    # Process the df once and store it
+    # Process the df once and store it. 
+    #   Changes the values or '1 Yr Return' to floats.
     df_etf['1 Yr Return'] = df_etf['1 Yr Return'].apply(
         lambda x: float(x.replace('%', '')) if isinstance(x, str) and x != '--' else None
     )
     # print("ETFs Dataframe:\n\n\n", f"\n{df_etf.head(1)}\n\n\n")
-
     return df_etf
 
 # Can separate into own folder later
@@ -44,14 +44,3 @@ def one_year_return():
     return return_dict
 
 #one_year_return()
-
-# Write a function that gets the top 10 maxes
-def top_10_max():
-    # Sort the dataframe by 1 Yr Return in descending order
-    df_sorted = df_etf.sort_values(by='1 Yr Return', ascending=False)
-    # Get the top 10 rows
-    top_10 = df_sorted.head(10)
-    # Print the top 10 rows
-    print(top_10)
-
-#top_10_max()
