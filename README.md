@@ -1,6 +1,6 @@
 # ETF Scanner
 
-Pulls from locally saved CSVs to recommend ETFs and Funds for investing.
+Pulls from locally saved CSVs to .
 
 ## Lifetime of Pandas Tables
 
