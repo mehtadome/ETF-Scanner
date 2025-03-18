@@ -3,16 +3,17 @@ import "./IDForm.css";
 
 interface IDFormProps {
   username: string;
-  onClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  // Callback function which allows parent component to maintain state of current input
+  onInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 /**
  * Ingests the entered username and loads two components showing some data about user's library.
  * @param { username } Spotify username.
- * @param { onClick } Functionality for submiting form.
+ * @param { onInputChange } Functionality for submiting form.
  * @returns <FC>
  */
-const IDForm = ({ username, onClick }: IDFormProps) => {
+const IDForm = ({ username, onInputChange }: IDFormProps) => {
   // Store the username for future usage
   localStorage.setItem("spotify_username", username);
 
@@ -32,7 +33,7 @@ const IDForm = ({ username, onClick }: IDFormProps) => {
         className="id-form-input"
         type="text"
         value={username}
-        onChange={onClick}
+        onChange={onInputChange}
         placeholder="Enter your Spotify username"
         required
       />
