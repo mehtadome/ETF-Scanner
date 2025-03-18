@@ -6,17 +6,10 @@ import "./App.css";
 import Footer from "./components/Footer";
 import IDForm from "./components/forms/IDForm";
 import Main from "./pages/Main";
+import RiskForm from "./components/forms/riskForm";
 
 function App() {
   const [count, setCount] = useState(0);
-
-  const [username, setUsername] = useState<string>(() => {
-    // Initialize from localStorage if it exists
-    return localStorage.getItem("spotify_username") || "";
-  });
-  const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(event.target.value);
-  };
 
   return (
     <>
@@ -44,16 +37,11 @@ function App() {
           </div>
           <div className="route-to-favorites">
             <Routes>
-              <Route
-                path="/"
-                element={
-                  <IDForm username={username} onClick={handleUsernameChange} />
-                }
-              ></Route>
-              <Route
+              <Route path="/" element={<RiskForm />}></Route>
+              {/* <Route
                 path="/favorites/:username"
                 element={<Main username={username} />}
-              />
+              /> */}
             </Routes>
           </div>
         </main>

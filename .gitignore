@@ -32,3 +32,6 @@ dist-ssr
 # Local XLS
 *.xls
 *.xlsx
+
+# Local Note Files
+*.txt
