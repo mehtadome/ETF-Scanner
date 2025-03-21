@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { fetchTop10_10YrMFsReturn, MutualFunds } from "../../api/fetchApi";
 import "./top10ETFsDisplay.css";
-import { ScannerProps } from "../../pages/Main";
+import { ScannerProps } from "../../pages/HomePage";
 import { stripMutualFundsAcronym } from "../../utils/cleanResponse";
 
 /**
