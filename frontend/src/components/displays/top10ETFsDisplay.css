@@ -1,3 +1,22 @@
+:root {
+  --background-primary: #ffffff;
+  --background-secondary: #f5f5f5;
+  --text-primary: #000000;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background-primary: #1a1a1a;
+    --background-secondary: #2d2d2d;
+    --text-primary: #ffffff;
+  }
+}
+
+.loading-buffer,
+.error-box {
+  color: var(--text-primary);
+}
+
 .loading-buffer {
   display: flex;
   justify-content: center;
@@ -21,6 +40,13 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
+  background-color: var(--background-primary);
+  color: var(--text-primary);
+}
+
+.songs-container,
+.songs-card {
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .songs-grid {
@@ -41,6 +67,8 @@
   flex-direction: column;
   position: relative;
   cursor: "pointer";
+  background-color: var(--background-secondary);
+  color: var(--text-primary);
 }
 
 .songs-card:hover {
@@ -98,6 +126,12 @@
   .songs-container {
     padding: 1rem;
   }
+}
+
+/* Dark mode styles */
+.loading-buffer,
+.error-box {
+  color: var(--text-primary); /* Dark mode text for loading and error states */
 }
 
 /* Optional animations */

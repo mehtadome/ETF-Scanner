@@ -162,6 +162,24 @@
   }
 }
 
+/* Dark mode styles */
+@media (prefers-color-scheme: dark) {
+  .playlists-container {
+    background-color: #1a1a1a; /* Dark mode background */
+    color: #ffffff; /* Dark mode text */
+  }
+
+  .playlists-card {
+    background-color: #2d2d2d; /* Dark mode card background */
+    color: #ffffff; /* Dark mode text */
+  }
+
+  .loading-buffer,
+  .error-box {
+    color: #ffffff; /* Dark mode text for loading and error states */
+  }
+}
+
 /* Optional: Animation for cards */
 @keyframes fadeIn {
   from {

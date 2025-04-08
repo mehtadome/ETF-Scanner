@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import { fetchTop10_1YrETFsReturn, ETFs } from "../../api/fetchApi";
 import "./top10ETFsDisplay.css";
-import { ScannerProps } from "../../pages/Main";
 import { stripETFsAcronym } from "../../utils/cleanResponse";
 /**
  * Display 20 ETFs based on return wanted (Currently hard-coded to 1 year).
  * @param { returnParam } <string> (Currently hard-coded to 1 year in Main.tsx)
  * @returns { component } <FC>
  */
-export const Top10ETFs: React.FC<ScannerProps> = ({ returnParam }) => {
+export const Top10ETFs = () => {
   /**
    * Uncomment and use the following line if the below error breaks your code:
    *  Argument of type '{}' is not assignable to parameter of type 'SetStateAction<Playlists>'.ts(2345)
@@ -54,7 +53,7 @@ export const Top10ETFs: React.FC<ScannerProps> = ({ returnParam }) => {
     };
 
     lastLikes();
-  }, [returnParam]);
+  }, []);
 
   const handleCardClick = (etfName: string) => {
     const searchQuery = encodeURIComponent(etfName);

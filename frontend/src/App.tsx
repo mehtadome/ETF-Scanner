@@ -4,12 +4,21 @@ import viteLogo from "/vite.svg";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Footer from "./components/Footer";
-import IDForm from "./components/forms/IDForm";
-import Main from "./pages/Main";
-import RiskForm from "./components/forms/riskForm";
+import HomePage from "./pages/HomePage";
+import InsightsPage from "./pages/InsightsPage";
 
 function App() {
   const [count, setCount] = useState(0);
+
+  const getAssetTypeFromStorage = () => {
+    try {
+      const storedAssetType = localStorage.getItem("assetType");
+      return storedAssetType ? JSON.parse(storedAssetType) : "";
+    } catch (error) {
+      console.error("Error parsing assetType from localStorage:", error);
+      return "";
+    }
+  };
 
   return (
     <>
@@ -37,11 +46,11 @@ function App() {
           </div>
           <div className="route-to-favorites">
             <Routes>
-              <Route path="/" element={<RiskForm />}></Route>
-              {/* <Route
-                path="/favorites/:username"
-                element={<Main username={username} />}
-              /> */}
+              <Route path="/" element={<HomePage />}></Route>
+              <Route
+                path="/scanner/insights/:assetType"
+                element={<InsightsPage />}
+              ></Route>
             </Routes>
           </div>
         </main>

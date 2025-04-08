@@ -1,9 +1,8 @@
-import { ScannerProps } from "../../pages/Main";
 import "./connectionDisplay.css";
 import { useEffect, useState } from "react";
 
 // Should simply display "Yo, Hello World!"
-export const ConnTest: React.FC<ScannerProps> = ({ returnParam }) => {
+export const ConnTest = () => {
   const [test, setTest] = useState("");
   const [error, setError] = useState<string | null>(null);
 
