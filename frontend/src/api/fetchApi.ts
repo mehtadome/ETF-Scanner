@@ -88,6 +88,44 @@ export async function fetchTop10_10YrMFsReturn<MutualFunds>(): Promise<
   };
 }
 
+/**
+ * GET: Grab top 10 ETFs/MFs based on the following:
+ *                  |-- "Asset Type", "Risk Level", "Expense Ratio", "Return Ratio"
+ * PATH: http://localhost:5000/api/favorites/<username>
+ * @param { riskPortolio } <string> (currently unimplemented and hard-coded to 1 yr return outside of function).
+ * @returns { ETFs } <JSON>
+*  Example Response:
+    {
+        'FIRST TRUST SKYBRIDGE CRYPTO INDUSTRY & DIGITAL ECONOMY ETF (CRPT)': 147.36, 
+        'SIMPLIFY VOLT TSLA REVOLUTION ETF (TESL)': 145.48
+    }
+ */
+export async function fetchETFsPortolio<ETFs>(): Promise<
+  FetchApiResponse<ETFs>
+> {
+  const response = await fetch(`/api/etfs/1year`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    credentials: "same-origin",
+  });
+
+  if (!response.ok) {
+    console.log("Top 20 ETF choices for 1 year return: ", response);
+    throw new Error(
+      `Top 20 ETFs for 1 year | HTTP error! status: ${response.status}`
+    );
+  }
+
+  const data = await response.json();
+  return {
+    data,
+    status: response.status,
+  };
+}
+
 /** Another way to fetch
  * *
  * return fetch(`${BASE_URL}/favorites/${username}`)

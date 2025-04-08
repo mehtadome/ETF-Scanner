@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import "./RiskForm.css";
-import AssetTypeSelect from "../selects/assetTypeSelect";
-import RiskLevelSelect from "../selects/riskLevelSelect";
+import AssetTypeSelect from "../selects/AssetTypeSelect.tsx";
+import RiskLevelSelect from "../selects/RiskLevelSelect";
 import ExpenseRatioSelect from "../selects/ExpenseRatioSelect";
 import ReturnRatioSelect from "../selects/ReturnRatioSelect";
 
