@@ -1,4 +1,5 @@
 import { FetchApiResponse } from "./apiUtils";
+import { Top10ETFsProps } from "../components/displays/top10ETFsDisplay";
 
 // INFO: BASE_URL= http://localhost:5000/api
 
@@ -25,17 +26,22 @@ export interface ETFs {
         'SIMPLIFY VOLT TSLA REVOLUTION ETF (TESL)': 145.48
     }
  */
-export async function fetchTop10_1YrETFsReturn<ETFs>(): Promise<
-  FetchApiResponse<ETFs>
-> {
-  const response = await fetch(`/api/etfs/1year`, {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    credentials: "same-origin",
-  });
+export async function fetchTop10_1YrETFsReturn<ETFs>({
+  riskLevel,
+  expenseRatio,
+  returnRatio,
+}: Top10ETFsProps): Promise<FetchApiResponse<ETFs>> {
+  const response = await fetch(
+    `/api/etfs/1year/${riskLevel}&${expenseRatio}&${returnRatio}`,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      credentials: "same-origin",
+    }
+  );
 
   if (!response.ok) {
     console.log("Top 20 ETF choices for 1 year return: ", response);

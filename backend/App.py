@@ -47,8 +47,8 @@ def home():
     return f"<h1>Hello World!</h1> <br /><h2>Backend is running :)</h2> <br /><h3>Flask Version: {flask_version}</h3> <br /><h3>Host Name: {host_name}</h3>"
     
 
-@app.route('/etfs/1year')
-def etfs_1year():
+@app.route('/etfs/1year/<riskLevel>&<expenseRatio>&<returnRatio>')
+def etfs_1year(riskLevel, expenseRatio, returnRatio):
     """
     Return the top 10 best choices for 1 year return.
 

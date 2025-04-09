@@ -32,11 +32,6 @@ const RiskForm = ({ formData, handleInputChange }: RiskFormProps) => {
     event.preventDefault();
 
     try {
-      // Save to localStorage
-      Object.entries(formData).forEach(([key, value]) => {
-        localStorage.setItem(key, JSON.stringify(value)); // Parse with JSON.parse(localStorage.getItem('riskLevel') || 'null');
-      });
-
       // Create URLSearchParams object
       const queryParams = new URLSearchParams({
         riskLevel: formData.riskLevel,

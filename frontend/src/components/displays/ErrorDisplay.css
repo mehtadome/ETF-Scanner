@@ -1,0 +1,16 @@
+.error-container {
+  padding: 20px;
+  margin: 20px;
+  border: 1px solid #ff0000;
+  border-radius: 4px;
+  background-color: #fff5f5;
+  color: #dc2626;
+}
+
+@media (prefers-color-scheme: dark) {
+  .error-container {
+    background-color: #3b1818;
+    border-color: #dc2626;
+    color: #ff8080;
+  }
+}
