@@ -1,25 +1,5 @@
 import pandas as pd
-
-# GLOBALS
-COLUMNS_TO_CLEAN = [
-    '1 Yr Return', 
-    '3 Yr Return', 
-    '5 Yr Return', 
-    '10 Yr Return',
-    'Since Inception Return',
-    'Expense Ratio',
-]
-
-COLUMNS_TO_KEEP = [
-    'ETF Name',
-    '1 Yr Return', 
-    '3 Yr Return', 
-    '5 Yr Return', 
-    '10 Yr Return',
-    'Since Inception Return',
-    '3-Year Alpha',
-    'Expense Ratio',
-]
+from ...calcs.constants import COLUMNS_TO_CLEAN, COLUMNS_TO_KEEP
 
 def clean_percentage_columns(df, columns):
     """
