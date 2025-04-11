@@ -1,6 +1,47 @@
 # ETF Scanner
 
-Pulls from locally saved CSVs to .
+# Installation Instructions
+
+Follow the below to start the application correctly.
+
+## Pre-requisites
+
+> Node.js
+> Python 3.12
+
+### Terminal 1 - Start Flask
+
+```
+cd backend
+. .venv/bin/activate
+python App.py
+```
+
+### Terminal 2 - Start Vite
+
+```
+cd frontend
+npm install
+npm run dev
+```
+
+### Testing - Run individual Python files
+
+From the root folder, you can run:
+
+```
+python -m backend.modules.calcs.ETFs.annual_return
+```
+
+OR
+
+```
+python -m backend.modules.tests.Test
+```
+
+# Appendix
+
+Pulls from locally saved CSVs.
 
 ## Lifetime of Pandas Tables
 
