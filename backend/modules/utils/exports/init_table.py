@@ -58,20 +58,6 @@ def export_mutual_fund(logger):
 
 
 # LOGGERLESS FUNCTIONS
-def export_etf_loggerless():
-    """
-    Export the dataframe tied to ETFs without requiring a logger to be passed.
-    
-    Returns:
-        Pandas Dataframe.
-    """
-    df_etf = pd.read_excel(etf_path,
-                   sheet_name='Performance',
-                   index_col=0)
-    # print (df_etf)
-    return df_etf
-
-
 def export_combined_sheets_loggerless():
     """
     Safe function which combines the columns from three different sheets into one dataframe.
@@ -129,6 +115,20 @@ def export_combined_sheets_loggerless():
     except Exception as e:
         print(f"Error processing Excel file: {str(e)}")
         raise
+
+
+def export_etf_loggerless():
+    """
+    Export the dataframe tied to ETFs without requiring a logger to be passed.
+    
+    Returns:
+        Pandas Dataframe.
+    """
+    df_etf = pd.read_excel(etf_path,
+                   sheet_name='Performance',
+                   index_col=0)
+    # print (df_etf)
+    return df_etf
 
 
 def export_mutual_fund_loggerless():

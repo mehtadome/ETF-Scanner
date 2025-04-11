@@ -1,8 +1,9 @@
 import importlib.metadata
-from flask import Flask, request, jsonify
+from flask import Flask, Response, json, request, jsonify
 from flask_cors import CORS
 import logging
-from modules.calcs.ETFs.annual_return import one_year_return as etf_one_year_return
+from modules.calcs.ETFs.annual_return import get_one_year_return
+from modules.calcs.constants import LOGGER_BAR
 #from modules.calcs.MutualFunds.annual_return import one_year_return as mf_one_year_return
 
 import sys
@@ -59,13 +60,19 @@ def etfs(risk_level, expense_ratio, return_ratio):
         500: Backend logic wrong.
     """
     try: 
-        app.logger.info(f"Received request for best ETFs with the following conditions:\n Risk Level [{risk_level}], Expense Ratio [{expense_ratio}], Return Ratio [{return_ratio}].")
-        best_etfs = etf_one_year_return()
+        app.logger.info(LOGGER_BAR)
+        app.logger.info(f"\nReceived request for best ETFs with the following conditions:\n Risk Level = [{risk_level}], Expense Ratio = [{expense_ratio}], Return Ratio = [{return_ratio}].")
+        best_etfs = get_one_year_return(risk_level, expense_ratio, return_ratio, app.logger)
 
-        app.logger.info(f"Best ETFs for 1 year return: {best_etfs}")
-        return jsonify(best_etfs)
+        app.logger.info(f"\n\nReturning dictionary of ETFs that fit criteria.\n\n")
+        # return jsonify(best_etfs)
+        return Response(
+        json.dumps(best_etfs, sort_keys=False),
+        mimetype='application/json'
+    )
     
     except Exception as e:
+        app.logger.error(LOGGER_BAR)
         app.logger.error(f"Error, {e}")
         return jsonify({"error": f"{e}"}), 400
 
@@ -83,7 +90,8 @@ def mutualfunds_10year():
     """
     try:
         app.logger.info(f"Received request for best 10 year return on mutual funds.")
-        best_10 = mf_one_year_return()
+        # best_10 = mf_one_year_return()
+        best_10 = 1
 
         app.logger.info(f"Best 10 Mutual Funds for 10 year return: {best_10}")
         return jsonify(best_10)

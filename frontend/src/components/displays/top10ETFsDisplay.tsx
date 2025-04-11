@@ -29,11 +29,11 @@ export const Top10ETFs = ({
   useEffect(() => {
     const lastLikes = async () => {
       try {
-        const response = await fetchTop10_1YrETFsReturn(
+        const response = await fetchTop10_1YrETFsReturn({
           riskLevel,
           expenseRatio,
-          returnRatio
-        );
+          returnRatio,
+        });
 
         if (response.data) {
           console.log(response.data);

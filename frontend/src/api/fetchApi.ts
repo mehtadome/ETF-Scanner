@@ -1,5 +1,6 @@
 import { FetchApiResponse } from "./apiUtils";
 import { Top10ETFsProps } from "../components/displays/top10ETFsDisplay";
+import { logFirst10ETFs } from "../utils/logging";
 
 // INFO: BASE_URL= http://localhost:5000/api
 
@@ -10,6 +11,15 @@ export interface MutualFunds {
 // differentiating for readability
 export interface ETFs {
   [key: string]: string;
+}
+
+// Return ETF Values
+export interface ETFData {
+  [key: string]: {
+    return: number;
+    expense: number;
+    alpha: number;
+  };
 }
 
 // TODO: Split up API functions by ETF / Mutual Fund
@@ -31,6 +41,14 @@ export async function fetchTop10_1YrETFsReturn<ETFs>({
   expenseRatio,
   returnRatio,
 }: Top10ETFsProps): Promise<FetchApiResponse<ETFs>> {
+  console.log(
+    "FETCH API DEBUG\nriskLevel: ",
+    riskLevel,
+    "expenseRatio: ",
+    expenseRatio,
+    "returnRatio: ",
+    returnRatio
+  );
   const response = await fetch(
     `/api/etfs/1year/${riskLevel}&${expenseRatio}&${returnRatio}`,
     {
@@ -51,6 +69,8 @@ export async function fetchTop10_1YrETFsReturn<ETFs>({
   }
 
   const data = await response.json();
+  logFirst10ETFs(data as ETFData);
+
   return {
     data,
     status: response.status,
