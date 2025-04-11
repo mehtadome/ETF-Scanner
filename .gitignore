@@ -35,3 +35,6 @@ dist-ssr
 
 # Local Note Files
 *.txt
+
+# Specific Python files
+calcs
