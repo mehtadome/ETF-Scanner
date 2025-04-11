@@ -3,7 +3,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import logging
 from modules.calcs.ETFs.annual_return import one_year_return as etf_one_year_return
-from modules.calcs.MutualFunds.annual_return import one_year_return as mf_one_year_return
+#from modules.calcs.MutualFunds.annual_return import one_year_return as mf_one_year_return
 
 import sys
 sys.path.append('../backend/')
@@ -47,8 +47,8 @@ def home():
     return f"<h1>Hello World!</h1> <br /><h2>Backend is running :)</h2> <br /><h3>Flask Version: {flask_version}</h3> <br /><h3>Host Name: {host_name}</h3>"
     
 
-@app.route('/etfs/1year/<riskLevel>&<expenseRatio>&<returnRatio>')
-def etfs_1year(riskLevel, expenseRatio, returnRatio):
+@app.route('/etfs/1year/<risk_level>&<expense_ratio>&<return_ratio>')
+def etfs(risk_level, expense_ratio, return_ratio):
     """
     Return the top 10 best choices for 1 year return.
 
@@ -59,11 +59,11 @@ def etfs_1year(riskLevel, expenseRatio, returnRatio):
         500: Backend logic wrong.
     """
     try: 
-        app.logger.info(f"Received request for best 1 year return on ETFs.")
-        best_10 = etf_one_year_return()
+        app.logger.info(f"Received request for best ETFs with the following conditions:\n Risk Level [{risk_level}], Expense Ratio [{expense_ratio}], Return Ratio [{return_ratio}].")
+        best_etfs = etf_one_year_return()
 
-        app.logger.info(f"Best 10 ETFs for 1 year return: {best_10}")
-        return jsonify(best_10)
+        app.logger.info(f"Best ETFs for 1 year return: {best_etfs}")
+        return jsonify(best_etfs)
     
     except Exception as e:
         app.logger.error(f"Error, {e}")
