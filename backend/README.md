@@ -1,5 +1,9 @@
 # Backend
 
+# Configure Development Environment
+
+Follow these steps to correctly configure the development environment for the backend.
+
 ## Run individual scripts
 
 Python treats modules as packages. Because of such, importing different files to use their functions becomes much more complex for testing.
