@@ -36,8 +36,8 @@ export const Top10ETFs = ({
         });
 
         if (response.data) {
-          console.log(response.data);
           const responseCleaned = stripETFsAcronym(response.data);
+          console.log("Cleaned response is", responseCleaned);
           setETFs(responseCleaned);
         }
       } catch (err) {
@@ -60,7 +60,7 @@ export const Top10ETFs = ({
 
   return (
     <div className="songs-container">
-      <h3>Top 10 ETFs for 1 yr return</h3>
+      <h2>Results</h2>
       <div className="songs-grid">
         {Object.entries(ETFs).map(([name, value]) => (
           <div
@@ -69,7 +69,10 @@ export const Top10ETFs = ({
             onClick={() => handleCardClick(name)}
           >
             <h5>
-              {name}: {value}%
+              <h3>{name}</h3>
+              Return: {value.return}% <br />
+              Risk: {value.alpha}%<br />
+              Expense: {value.expense}% <br />
             </h5>
           </div>
         ))}

@@ -6,6 +6,8 @@ import { useSearchParams } from "react-router-dom";
 import { ErrorDisplayProps } from "../components/displays/ErrorDisplay";
 import ErrorDisplay from "../components/displays/ErrorDisplay";
 
+// TODO: Fix UI issues (most likely too many elements and not parsing correctly (nested dictionary with more values now))
+
 /**
  * Display the insights page.
  * @returns { component } <FC>
