@@ -24,10 +24,10 @@ const RiskLevelSelect = ({ riskLevel, handleInputChange }: RiskLevelProps) => {
         <option value="" disabled>
           Select Risk Level
         </option>
-        <option value="Low">Low (0 - 25)</option>
-        <option value="Medium">Medium (25 - 50)</option>
-        <option value="High">High (50 - 75)</option>
-        <option value="Very High">Very High (75 - 100)</option>
+        <option value="Low">Low (0 - 0.25)</option>
+        <option value="Medium">Medium (0.25 - 0.50)</option>
+        <option value="High">High (0.50 - 1.00)</option>
+        <option value="Very High">Very High (1.00+)</option>
       </select>
     </>
   );
