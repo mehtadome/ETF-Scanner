@@ -6,8 +6,7 @@ export function logFirst10ETFs(data: ETFData) {
     Object.entries(data as ETFData).slice(0, 10)
   ) as ETFData;
 
-  console.log("Total ETFs:", Object.keys(data).length);
-  console.log("\nFirst 10 ETFs:");
+  console.log("Total ETFs:", Object.keys(data).length, "/ ETFs returned are:");
   Object.entries(first10Entries).forEach(([key, value], index) => {
     console.log(`${index + 1}. ${key}:`, value);
   });
